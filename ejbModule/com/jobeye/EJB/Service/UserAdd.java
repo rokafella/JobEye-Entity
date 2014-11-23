@@ -21,9 +21,13 @@ public class UserAdd {
 	 private static Logger logger = Logger.getLogger("com.jobeye.EJB.Service.UserAdd");
 	 private static FileHandler fh;
 	 
-	 public String UserAdd(String name){
+	 public String UserAdd(String name, String email, String phone, String password){
 		 
-		 String param = name;
+		 String[] params = new String[4];
+		 params[0] = name;
+		 params[1] = email;
+		 params[2] = phone;
+		 params[3] = password;
 		 
 		 try{
 			 if(fh == null)
@@ -31,7 +35,7 @@ public class UserAdd {
 			 	  fh.setFormatter(new SimpleFormatter());
 			      logger.addHandler(fh);
 			      logger.setLevel(Level.ALL);
-			      logger.entering("AddUser", "addUser", param);
+			      logger.entering("AddUser", "addUser", params);
 		 }
 		 catch(Exception e){
 			 e.printStackTrace();
@@ -40,6 +44,9 @@ public class UserAdd {
 		 UserEntity newEntity = new UserEntity();
 		 
 		 newEntity.setName(name);
+		 newEntity.setPhone(phone);
+		 newEntity.setEmail(email);
+		 newEntity.setPassword(password);
 		 
 		 logger.exiting("AddUser", "addUser", "true");
 		 
