@@ -52,4 +52,23 @@ public class ProfileAdd {
 			return null;
 		}
 	}
+	
+	public int getProfileIdFromDb(String type){
+		try{
+			Query query = em.createNativeQuery("select * from PROFILE where Profiletype = '" + type
+					+ "'", ProfileEntity.class);
+			
+			ProfileEntity res = (ProfileEntity) query.getSingleResult();
+			
+			if(res==null){
+				return -1;
+			}
+			else{
+				return (int) res.getProfileId();
+			}
+		}
+		catch(Exception e){
+			return -1;
+		}
+	}
 }
