@@ -21,7 +21,7 @@ public class UserAdd {
 	 private static Logger logger = Logger.getLogger("com.jobeye.EJB.Service.UserAdd");
 	 private static FileHandler fh;
 	 
-	 public String UserAdd(String name, String email, String phone, String password){
+	 public int UserAdd(String name, String email, String phone, String password){
 		 
 		 String[] params = new String[4];
 		 params[0] = name;
@@ -53,19 +53,17 @@ public class UserAdd {
 		 try{
 			em.persist(newEntity);
 			em.flush();
+			return (int) newEntity.getUserId();
 		 }
 		 catch(EntityExistsException e){
-				return "Exists";
+				return -1;
 		 }
 		 catch(ConstraintViolationException e){
-				return "Exists";
+				return -1;
 		 }
 		 catch(Exception e){
-				return "Exists";
+				return -1;
 		 }
-		 
-		 return "true";
-		 
 	 }
 	 
 }
