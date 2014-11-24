@@ -3,12 +3,14 @@ package com.jobeye.EJB.Service;
 import javax.ejb.*;
 
 import com.jobeye.EJB.Entity.*;
+
 import javax.persistence.*;
 import javax.validation.ConstraintViolationException;
 
 import java.io.*;
 import java.util.logging.*;
 
+@SuppressWarnings("serial")
 @Stateless
 public class ApplicationSession implements Serializable
 {
@@ -18,7 +20,7 @@ public class ApplicationSession implements Serializable
 	 private static Logger logger = Logger.getLogger("com.jobeye.EJB.Service.ApplicationSession");
 	 private static FileHandler fh;
 	 
-	 public String AddApplication (int jobId, int profileId, String status)
+	 public int AddApplication (int jobId, int profileId, String status)
 	 {
 		 String[] param = new String[3];
 		 param[0] = Integer.toString(jobId);
@@ -38,7 +40,7 @@ public class ApplicationSession implements Serializable
 		 catch(Exception e)
 		 {
 			 e.printStackTrace();
-			 return "Exists";
+			 return -1;
 		 }
 		 ApplicationEntity application = new ApplicationEntity();
 		 application.setJobId(jobId);;
@@ -49,14 +51,14 @@ public class ApplicationSession implements Serializable
 		{
 			em.persist(application);
 			em.flush();
+			return (int) application.getApplicationId();
 		} catch (EntityExistsException e) {
-			return "Exists";
+			return -1;
 		} catch (ConstraintViolationException e) {
-			return "Exists";
+			return -1;
 		} catch (Exception e) {
-			return "Exists";
-		}		
-		return "true";
+			return -1;
+		}
 	 }
 }
 
