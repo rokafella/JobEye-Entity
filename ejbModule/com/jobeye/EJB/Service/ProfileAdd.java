@@ -14,21 +14,12 @@ public class ProfileAdd {
 	@PersistenceContext(unitName="JOBEYE")
 	 EntityManager em;
 	
-	public String addProfile(String type, String email){
+	public String addProfile(String type, int userId){
 		try{
-			Query query = em.createNativeQuery("select * from USER where email like '" + email
-					+ "'", UserEntity.class);
-			
-			UserEntity user = (UserEntity) query.getSingleResult();
-			
-			if(user==null){
-				return "false";
-			}
-			
 			ProfileEntity newEntity = new ProfileEntity();
 			
 			newEntity.setProfileType(type);
-			newEntity.setUserId(user.getUserId());
+			newEntity.setUserId(userId);
 			
 			em.persist(newEntity);
 			em.flush();
@@ -41,7 +32,7 @@ public class ProfileAdd {
 	
 	public List<String> oldProfileValues(int userId){
 		try{
-			Query query = em.createNativeQuery("select * from PROFILE where USERID like '" + userId
+			Query query = em.createNativeQuery("select * from PROFILE where USERID = '" + userId
 					+ "'", ProfileEntity.class);
 			
 			List<ProfileEntity> res = query.getResultList();
