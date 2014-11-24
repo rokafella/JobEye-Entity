@@ -16,7 +16,7 @@ public class JobSession
 	 private static Logger logger = Logger.getLogger("com.jobeye.EJB.Service.UserAdd");
 	 private static FileHandler fh;
 	 
-	 public String AddJob (int companyId, String location, String position)
+	 public int AddJob (int companyId, String location, String position)
 	 {
 		 String[] param = new String[4];
 		 param[0] = Integer.toString(companyId);
@@ -36,7 +36,7 @@ public class JobSession
 		 catch(Exception e)
 		 {
 			 e.printStackTrace();
-			 return "Exists";
+			 return -1;
 		 }
 		 JobEntity job = new JobEntity();
 		 job.setCompanyId(companyId);
@@ -47,15 +47,16 @@ public class JobSession
 		{
 			em.persist(job);
 			em.flush();
+			job.getJobId();
 		} catch (EntityExistsException e) {
-			return "Exists";
+			return -1;
 		} catch (ConstraintViolationException e) {
-			return "Exists";
+			return -1;
 		} catch (Exception e) {
-			return "Exists";
+			return -1;
 		}
 		
-		return "true";
+		return -1;
 		
 	 }
 }
