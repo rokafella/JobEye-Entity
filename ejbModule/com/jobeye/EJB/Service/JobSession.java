@@ -1,14 +1,17 @@
 package com.jobeye.EJB.Service;
 
 import javax.ejb.*;
+
 import com.jobeye.EJB.Entity.*;
+
 import javax.persistence.*;
 import javax.validation.ConstraintViolationException;
 
+import java.io.Serializable;
 import java.util.logging.*;
 
 @Stateless
-public class JobSession 
+public class JobSession implements Serializable
 {
 	 @PersistenceContext(unitName="JOBEYE")
 	 EntityManager em;
@@ -47,7 +50,7 @@ public class JobSession
 		{
 			em.persist(job);
 			em.flush();
-			job.getJobId();
+			return (int) job.getJobId();
 		} catch (EntityExistsException e) {
 			return -1;
 		} catch (ConstraintViolationException e) {
@@ -56,7 +59,7 @@ public class JobSession
 			return -1;
 		}
 		
-		return -1;
+//		return -1;
 		
 	 }
 }
