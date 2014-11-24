@@ -1,10 +1,11 @@
 package com.jobeye.EJB.Service;
 
 import java.util.logging.*;
+
 import javax.persistence.*;
 import javax.validation.ConstraintViolationException;
 
-import com.jobeye.EJB.Entity.CompanyEntity;;
+import com.jobeye.EJB.Entity.CompanyEntity;
 
 public class CompanySession {
 
@@ -18,7 +19,7 @@ public class CompanySession {
 	 private static Logger logger = Logger.getLogger("com.jobeye.EJB.Service.CompanySession");
 	 private static FileHandler fh;
 	 
-	 public String AddCompany(String name, String headQuarters, int userId)
+	 public int AddCompany(String name, String headQuarters, int userId)
 	 {
 		 String[] param = new String[3];
 		 param[0] = name;
@@ -38,7 +39,7 @@ public class CompanySession {
 		 catch(Exception e)
 		 {
 			 e.printStackTrace();
-			 return "Exists";
+			 return -1;
 		 }
 		 CompanyEntity company = new CompanyEntity();
 		 company.setName(name);;
@@ -50,12 +51,25 @@ public class CompanySession {
 			em.persist(company);
 			em.flush();
 		} catch (EntityExistsException e) {
-			return "Exists";
+			return -1;
 		} catch (ConstraintViolationException e) {
-			return "Exists";
+			return -1;
 		} catch (Exception e) {
-			return "Exists";
-		}		
-		return "true";
+			return -1;
+		}
+		
+		try{
+			Query query = em.createNativeQuery("select * from COMPANY where name like '" + name
+					+ "'" + " and userId = " + userId + ";", CompanyEntity.class);
+			
+			CompanyEntity companyFromDB = (CompanyEntity) query.getSingleResult();
+			if(companyFromDB != null){
+				return companyFromDB.getCompanyId();
+			}
+		}
+		catch(Exception e){
+			return -1;
+		}
+		return -1;
 	 }
 }
