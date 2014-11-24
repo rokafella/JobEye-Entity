@@ -1,5 +1,6 @@
 package com.jobeye.EJB.Service;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,7 +11,8 @@ import com.jobeye.EJB.Entity.ProfileEntity;
 import com.jobeye.EJB.Entity.UserEntity;
 
 @Stateless
-public class ProfileAdd {
+public class ProfileAdd implements Serializable
+{
 	@PersistenceContext(unitName="JOBEYE")
 	 EntityManager em;
 	

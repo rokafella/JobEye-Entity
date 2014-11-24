@@ -1,13 +1,17 @@
 package com.jobeye.EJB.Service;
 
+import java.io.Serializable;
 import java.util.logging.*;
 
+import javax.ejb.Stateless;
 import javax.persistence.*;
 import javax.validation.ConstraintViolationException;
 
 import com.jobeye.EJB.Entity.CompanyEntity;
 
-public class CompanySession {
+@Stateless
+public class CompanySession implements Serializable
+{
 
 	public CompanySession() {
 		// TODO Auto-generated constructor stub
