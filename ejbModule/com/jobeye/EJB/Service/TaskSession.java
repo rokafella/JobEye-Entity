@@ -7,7 +7,7 @@ import javax.validation.ConstraintViolationException;
 import com.jobeye.EJB.Entity.TaskEntity;
 
 import java.io.*;
-import java.sql.Date;
+import java.util.Date;
 import java.util.logging.*;
 
 @SuppressWarnings("serial")
@@ -25,13 +25,12 @@ public class TaskSession implements Serializable
 	 private static Logger logger = Logger.getLogger("com.jobeye.EJB.Service.TaskSession");
 	 private static FileHandler fh;
 
-	 public int AddTask(Date date, String description, int stageId, boolean isStageDependant)
+	 public int AddTask(Date date, String description, int applicationId)
 	 {
-		 String[] param = new String[4];
+		 String[] param = new String[3];
 		 param[0] = date.toString();
-		 param[1] = Integer.toString(stageId);
-		 param[2] = Boolean.toString(isStageDependant);
-		 param[3] = description;
+		 param[1] = Integer.toString(applicationId);
+		 param[2] = description;
 		 try
 		 {
 			 if(fh == null)
@@ -51,8 +50,7 @@ public class TaskSession implements Serializable
 		 TaskEntity task = new TaskEntity();
 		 task.setDate(date);
 		 task.setDescription(description);
-		 task.setStageDependant(isStageDependant);
-		 task.setStageId(stageId);
+		 task.setApplicationId(applicationId);
 		 
 		try 
 		{

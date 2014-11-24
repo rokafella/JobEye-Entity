@@ -1,6 +1,6 @@
 package com.jobeye.EJB.Entity;
 import java.io.*;
-import java.sql.Date;
+import java.util.Date;
 
 import javax.persistence.*;
 
@@ -39,20 +39,12 @@ public class TaskEntity implements Serializable
 		this.description = description;
 	}
 
-	public int getStageId() {
-		return stageId;
+	public int getApplicationId() {
+		return applicationId;
 	}
 
-	public void setStageId(int stageId) {
-		this.stageId = stageId;
-	}
-
-	public boolean isStageDependant() {
-		return isStageDependant;
-	}
-
-	public void setStageDependant(boolean isStageDependant) {
-		this.isStageDependant = isStageDependant;
+	public void setApplicationId(int applicationId) {
+		this.applicationId = applicationId;
 	}
 
 	@Id
@@ -66,12 +58,7 @@ public class TaskEntity implements Serializable
 	@Column(name="DESCRIPTION")
 	private String description;
 	
-	@Column(name="STAGEID")
-	private int stageId;
-	
-	@Column(name="ISSTAGEDEPENDANT")
-	private boolean isStageDependant;
-	
-	
+	@Column(name="APPLICATIONID")
+	private int applicationId;
 
 }
