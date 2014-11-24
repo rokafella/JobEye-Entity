@@ -26,4 +26,21 @@ public class LoginService {
 		}
 		return "false";
 	}
+	
+	public int getTheId(String email){
+		try{
+			Query query = em.createNativeQuery("select * from USER where email like '" + email
+					+ "'", UserEntity.class);
+			
+			UserEntity user = (UserEntity) query.getSingleResult();
+			
+			if(user!=null){
+				return (int) user.getUserId();
+			}
+		}
+		catch(Exception e){
+			return 0;
+		}
+		return 0;
+	}
 }

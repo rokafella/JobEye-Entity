@@ -1,5 +1,8 @@
 package com.jobeye.EJB.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.ejb.Stateless;
 import javax.persistence.*;
 
@@ -12,7 +15,6 @@ public class ProfileAdd {
 	 EntityManager em;
 	
 	public String addProfile(String type, String email){
-		
 		try{
 			Query query = em.createNativeQuery("select * from USER where email like '" + email
 					+ "'", UserEntity.class);
@@ -35,5 +37,28 @@ public class ProfileAdd {
 			return "false";
 		}
 		return "true";
+	}
+	
+	public List<String> oldProfileValues(int userId){
+		try{
+			Query query = em.createNativeQuery("select * from PROFILE where USERID like '" + userId
+					+ "'", ProfileEntity.class);
+			
+			List<ProfileEntity> res = query.getResultList();
+			List<String> response = new ArrayList<String>();
+			
+			if(res==null){
+				return null;
+			}
+			else{
+				for(ProfileEntity n: res){
+					response.add(n.getProfileType());
+				}
+			}
+			return response;
+		}
+		catch(Exception e){
+			return null;
+		}
 	}
 }
