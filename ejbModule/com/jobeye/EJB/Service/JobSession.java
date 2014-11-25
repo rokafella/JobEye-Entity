@@ -8,6 +8,8 @@ import javax.persistence.*;
 import javax.validation.ConstraintViolationException;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.*;
 
 @Stateless
@@ -59,8 +61,24 @@ public class JobSession implements Serializable
 			return -1;
 		}
 		
-//		return -1;
-		
+	 }
+	 
+	 public List<String> getApps(int jobId){
+		 	String q = "select name, location, position from company inner join (select  companyId, location, position from job where jobid ='"+jobId+"') as T where company.companyId = T.companyId";
+		 	Query query = em.createNativeQuery(q);
+			List<test> res = query.getResultList();
+			if(res==null){
+				return null;
+			}
+			else{
+				List<String> ret = new ArrayList();
+				for(test t: res){
+					ret.add(t.getComp());
+					ret.add(t.getLoc());
+					ret.add(t.getPos());
+				}
+				return ret;
+			}
 	 }
 }
 

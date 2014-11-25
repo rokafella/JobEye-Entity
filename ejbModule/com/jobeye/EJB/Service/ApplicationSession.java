@@ -8,6 +8,8 @@ import javax.persistence.*;
 import javax.validation.ConstraintViolationException;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.*;
 
 @SuppressWarnings("serial")
@@ -59,6 +61,25 @@ public class ApplicationSession implements Serializable
 		} catch (Exception e) {
 			return -1;
 		}
+	 }
+	 
+	 public List<Integer> getAllApps(int profileId, String status){
+		 Query query = em.createNativeQuery("select * from APPLICATION where PROFILEID = '" + profileId
+					+ "' and STATUS = '"+status+"'", ApplicationEntity.class);
+
+			List<ApplicationEntity> res = query.getResultList();
+			
+			List<Integer> response = new ArrayList<Integer>();
+
+			if(res==null){
+				return null;
+			}
+			else{
+				for(ApplicationEntity n: res){
+					response.add((int) n.getJobId());
+				}
+			}
+			return response;
 	 }
 }
 
