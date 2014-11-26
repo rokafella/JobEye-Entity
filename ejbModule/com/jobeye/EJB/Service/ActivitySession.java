@@ -69,15 +69,41 @@ public class ActivitySession implements Serializable
 	 }
 	 
 
-	 public List<String> findActivity(int cid){
+	 public List<String> findActivity(String cid){
 	    	List<String> activity = new ArrayList<String>();
+	    	String query1 = "select a.* from Activity a inner join Company c on a.companyid = c.companyid where c.name like '" + cid+ "';";
+	    	if(fh == null){
+				try {
+					fh = new FileHandler("final.txt");
+				} catch (SecurityException | IOException e) {
+					e.printStackTrace();
+				}
+				fh.setFormatter(new SimpleFormatter());
+				logger.addHandler(fh);
+				logger.setLevel(Level.ALL);
+				logger.entering("ActivitySession", "AddActivity", query1);
+			}
+			else
+			{
+				fh.setFormatter(new SimpleFormatter());
+				logger.addHandler(fh);
+				logger.setLevel(Level.ALL);
+				logger.entering("ActivitySession", "AddActivity", query1);
+			}
 	    	
 	    	Query query = em.createNativeQuery
-					("select * from Activity where CompanyId like '" + cid
-							+ "'" , ActivityEntity.class);
+					(query1 , ActivityEntity.class);
 	    	
 	    	ActivityEntity centity = new ActivityEntity();
-			centity = (ActivityEntity) query.getSingleResult();
+			try {
+				centity = (ActivityEntity) query.getSingleResult();
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				activity.add("");
+				activity.add("");
+				activity.add("");
+				return activity;
+			}
 
 			String date = centity.getDate().toString();
 			String description = centity.getDescription();

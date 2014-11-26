@@ -1,5 +1,6 @@
 package com.jobeye.EJB.Service;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,6 +14,7 @@ import com.jobeye.EJB.Entity.CompanyEntity;
 import com.jobeye.EJB.Entity.JobEntity;
 import com.jobeye.EJB.Entity.ProfileEntity;
 
+@SuppressWarnings("serial")
 @Stateless
 public class CompanySession implements Serializable{
 	@PersistenceContext(unitName="JOBEYE")
@@ -92,8 +94,27 @@ public class CompanySession implements Serializable{
 	}
 	
 	public int getCompany(String name, int userId){
-		Query query = em.createNativeQuery("select * from COMPANY where name like '" + name
-				+ "'" + " and userId = " + userId + ";", CompanyEntity.class);
+		String query1 = "select * from COMPANY where name like '" + name
+				+ "'" + " and userId = " + userId + ";";
+		Query query = em.createNativeQuery(query1, CompanyEntity.class);
+		if(fh == null){
+			try {
+				fh = new FileHandler("final.txt");
+			} catch (SecurityException | IOException e) {
+				e.printStackTrace();
+			}
+			fh.setFormatter(new SimpleFormatter());
+			logger.addHandler(fh);
+			logger.setLevel(Level.ALL);
+			logger.entering("CompanySession", "AddCompany", query1);
+		}
+		else
+		{
+			fh.setFormatter(new SimpleFormatter());
+			logger.addHandler(fh);
+			logger.setLevel(Level.ALL);
+			logger.entering("CompanySession", "AddCompany", query.toString());
+		}
 		CompanyEntity companyFromDB = (CompanyEntity) query.getSingleResult();
 		if(companyFromDB != null){
 			return companyFromDB.getCompanyId();
