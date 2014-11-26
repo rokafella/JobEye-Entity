@@ -10,6 +10,7 @@ import javax.persistence.*;
 import javax.validation.ConstraintViolationException;
 
 import com.jobeye.EJB.Entity.CompanyEntity;
+import com.jobeye.EJB.Entity.JobEntity;
 import com.jobeye.EJB.Entity.ProfileEntity;
 
 @Stateless
@@ -98,5 +99,25 @@ public class CompanySession implements Serializable{
 			return companyFromDB.getCompanyId();
 		}
 		return -1;
+	}
+	
+	public String getName(int cid){
+		 try{
+
+				Query query = em.createNativeQuery("select * from Company where companyId = '" + cid
+						+ "'", CompanyEntity.class);
+				
+				CompanyEntity res = (CompanyEntity) query.getSingleResult();
+				
+				if(res==null){
+					return "false";
+				}
+				else{
+					return (String) res.getName();
+				}
+			}
+			catch(Exception e){
+				return "false";
+			}
 	}
 }

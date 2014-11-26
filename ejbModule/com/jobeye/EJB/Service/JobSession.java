@@ -66,18 +66,77 @@ public class JobSession implements Serializable
 	 public List<String> getApps(int jobId){
 		 	String q = "select name, location, position from company inner join (select  companyId, location, position from job where jobid ='"+jobId+"') as T where company.companyId = T.companyId";
 		 	Query query = em.createNativeQuery(q);
-			List<test> res = query.getResultList();
+		
+			List<String> res = query.getResultList();
 			if(res==null){
 				return null;
 			}
-			else{
-				List<String> ret = new ArrayList();
-				for(test t: res){
-					ret.add(t.getComp());
-					ret.add(t.getLoc());
-					ret.add(t.getPos());
+			else{		
+				return res;
+			}
+	 }
+	 /*
+	 int companyID = jobSession.getCompanyId(jobid);
+		String location = jobSession.getLocation(jobid);
+		String position = jobSession.getPosition(jobid);
+		*/
+	 
+	 public int getCompanyId(int jobid){
+		 try{
+				Query query = em.createNativeQuery("select * from Job where JOBID = '" + jobid
+						+ "'", JobEntity.class);
+				
+				JobEntity res = (JobEntity) query.getSingleResult();
+				
+				if(res==null){
+					return -1;
 				}
-				return ret;
+				else{
+					return (int) res.getCompanyId();
+				}
+			}
+			catch(Exception e){
+				return -1;
+			}
+	 }
+	 
+	 public String getLocation(int jobid){
+		 try{
+
+				Query query = em.createNativeQuery("select * from Job where JOBID = '" + jobid
+						+ "'", JobEntity.class);
+				
+				JobEntity res = (JobEntity) query.getSingleResult();
+				
+				if(res==null){
+					return "false";
+				}
+				else{
+					return (String) res.getLocation();
+				}
+			}
+			catch(Exception e){
+				return "false";
+			}
+	 }
+	 
+	 public String getPosition(int jobid){
+		 try{
+
+				Query query = em.createNativeQuery("select * from Job where JOBID = '" + jobid
+						+ "'", JobEntity.class);
+				
+				JobEntity res = (JobEntity) query.getSingleResult();
+				
+				if(res==null){
+					return "false";
+				}
+				else{
+					return (String) res.getPosition();
+				}
+			}
+			catch(Exception e){
+				return "false";
 			}
 	 }
 }
