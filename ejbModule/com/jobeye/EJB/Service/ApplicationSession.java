@@ -114,6 +114,23 @@ public class ApplicationSession implements Serializable
 		 
 	 }
 	 
+	 public String getdescriptionForid(int applicationId)
+	 {
+		 String querystring = "select a.* from application a "
+			 		+ "where a.applicationid =" + applicationId + ";";
+		 Query query = em.createNativeQuery(querystring, ApplicationEntity.class);
+
+		 log("getapplicationFordescription", querystring);
+		 
+			List<ApplicationEntity> res = query.getResultList();
+			
+			if(res==null)
+				return null;
+			else
+				return res.get(0).getDescription();
+		 
+	 }
+	 
 	 public void log(String message, String function)
 	 {
 		 try
