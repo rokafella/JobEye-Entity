@@ -22,6 +22,17 @@ public class ApplicationEntity implements Serializable
 	
 	@Column(name="STATUS")
 	private String status;
+	
+	@Column(name="DESCRIPTION")
+	private String description;
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
 
 	public long getApplicationId() {
 		return applicationId;

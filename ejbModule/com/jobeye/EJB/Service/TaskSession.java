@@ -35,7 +35,7 @@ public class TaskSession implements Serializable
 		 {
 			 if(fh == null)
 			 {
-				 fh = new FileHandler("final.txt");
+				 fh = new FileHandler("finalTask.txt");
 				 fh.setFormatter(new SimpleFormatter());
 				 logger.addHandler(fh);
 				 logger.setLevel(Level.ALL);

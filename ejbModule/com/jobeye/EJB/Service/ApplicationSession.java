@@ -22,7 +22,7 @@ public class ApplicationSession implements Serializable
 	 private static Logger logger = Logger.getLogger("com.jobeye.EJB.Service.ApplicationSession");
 	 private static FileHandler fh;
 	 
-	 public int AddApplication (int jobId, int profileId, String status)
+	 public int AddApplication (int jobId, int profileId, String status, String description)
 	 {
 		 String[] param = new String[3];
 		 param[0] = Integer.toString(jobId);
@@ -48,6 +48,7 @@ public class ApplicationSession implements Serializable
 		 application.setJobId(jobId);;
 		 application.setProfileId(profileId);;
 		 application.setStatus(status);
+		 application.setDescription(description);
 		 
 		try 
 		{
@@ -80,6 +81,62 @@ public class ApplicationSession implements Serializable
 				}
 			}
 			return response;
+	 }
+	 
+	 public List<ApplicationEntity> getAllApplicationsForTasks(String status)
+	 {
+		 Query query = em.createNativeQuery("select * from APPLICATION where STATUS = '"+status+"'", ApplicationEntity.class);
+
+			List<ApplicationEntity> res = query.getResultList();
+			
+			if(res==null)
+				return null;
+			else
+				return res;
+	 }
+	 
+	 public int getapplicationFordescription(String description, int userId)
+	 {
+		 String querystring = "select a.* from application a "
+			 		+ "join job j on a.jobid = j.jobid "
+			 		+ "join company c on c.companyid = j.companyid "
+			 		+ "where a.description = '" + description + "' and c.userid = " + userId +";";
+		 Query query = em.createNativeQuery(querystring, ApplicationEntity.class);
+
+		 log("getapplicationFordescription", querystring);
+		 
+			List<ApplicationEntity> res = query.getResultList();
+			
+			if(res==null)
+				return -1;
+			else
+				return (int) res.get(0).getApplicationId();
+		 
+	 }
+	 
+	 public void log(String message, String function)
+	 {
+		 try
+		 {
+			 if(fh == null)
+			 {
+				 fh = new FileHandler("final.txt");
+				 fh.setFormatter(new SimpleFormatter());
+				 logger.addHandler(fh);
+				 logger.setLevel(Level.ALL);
+				 logger.entering("ApplicationSession", function, message);
+			 }
+			 else
+			 {
+				 logger.addHandler(fh);
+				 logger.setLevel(Level.ALL);
+				 logger.entering("ApplicationSession", function, message);
+			 }
+		 }
+		 catch(Exception e)
+		 {
+			 e.printStackTrace();
+		 }
 	 }
 }
 
