@@ -4,10 +4,13 @@ import javax.ejb.Stateless;
 import javax.persistence.*;
 import javax.validation.ConstraintViolationException;
 
+import com.jobeye.EJB.Entity.ApplicationEntity;
 import com.jobeye.EJB.Entity.TaskEntity;
 
 import java.io.*;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.logging.*;
 
 @SuppressWarnings("serial")
@@ -65,5 +68,35 @@ public class TaskSession implements Serializable
 			return -1;
 		}
 		
+	 }
+	 
+	 public List<List<String>> getTasksforProfile(int profileId)
+	 {
+		 String querystring = "select t.* from task t "
+		 				+ " join application a on t.applicationid = a.applicationid "
+		 				+ "where a.profileid = " + profileId +";" ;
+	 Query query = em.createNativeQuery(querystring, TaskEntity.class);
+
+	 //log("getapplicationFordescription", querystring);
+	 
+		List<TaskEntity> res = query.getResultList();
+		
+		if(res==null)
+			return null;
+		else
+		{
+			List<List<String>> tasks = new ArrayList<List<String>>();
+			for(TaskEntity s:res)
+			{
+				ArrayList<String> task = new ArrayList<String>();
+				task.add(s.getDate().toString());
+				task.add(s.getDescription());
+				task.add(Long.toString(s.getApplicationId()));
+				tasks.add(task);
+			}
+			return tasks;
+		}
+
+
 	 }
 }
