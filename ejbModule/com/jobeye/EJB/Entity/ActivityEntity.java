@@ -1,7 +1,6 @@
 package com.jobeye.EJB.Entity;
 
 import java.io.Serializable;
-import java.util.Date;
 
 import javax.persistence.*;
 
@@ -28,28 +27,12 @@ public class ActivityEntity implements Serializable
 		this.title = title;
 	}
 
-	public Date getDate() {
-		return date;
-	}
-
-	public void setDate(Date date) {
-		this.date = date;
-	}
-
 	public String getDescription() {
 		return description;
 	}
 
 	public void setDescription(String description) {
 		this.description = description;
-	}
-
-	public int getCompanyId() {
-		return companyId;
-	}
-
-	public void setCompanyId(int companyId) {
-		this.companyId = companyId;
 	}
 
 	@Id
@@ -61,12 +44,28 @@ public class ActivityEntity implements Serializable
 	private String title;
 	
 	@Column(name="DATE")
-	private Date date;
+	private String date;
 	
+	public String getDate() {
+		return date;
+	}
+
+	public void setDate(String date) {
+		this.date = date;
+	}
+
 	@Column(name="DESCRIPTION")
 	private String description;
 	
-	@Column(name="COMPANYID")
-	private int companyId;
+	@Column(name="COMPANY")
+	private String company;
+
+	public String getCompany() {
+		return company;
+	}
+
+	public void setCompany(String company) {
+		this.company = company;
+	}
 	
 }

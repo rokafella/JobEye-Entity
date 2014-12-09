@@ -10,4 +10,15 @@
             
        </properties>
 	</persistence-unit>
+
+	<persistence-unit name="JOBEYEACTIVITY">
+	   <jta-data-source>java:jboss/datasources/ActivityDS</jta-data-source>
+	   <class>com.jobeye.EJB.Entity.ApplicationEntity</class>
+	   	   
+	   <properties>
+	   
+            <property name="hibernate.hbm2ddl.auto" value="update"/>
+            
+       </properties>
+	</persistence-unit>
 </persistence>
